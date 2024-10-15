@@ -1,0 +1,23 @@
+version : '2'
+
+# here you map the source of your data to be acces be the models.
+sources : 
+  - name : tcph # the name of the datast
+    database : SNOWFLAKE_SAMPLE_DATA
+    schema : TPCH_SF1
+    tables : 
+    - name : orders # table 1
+      columns : 
+        - name : o_orderkey
+          data_tests : 
+            - unique
+            - not_null
+
+    - name : lineitem # table 2 
+      columns :
+        - name : l_orderkey
+          data_tests:
+            - relationship: 
+                to: source('tcph','orders')
+                field: o_orderkey
+          
